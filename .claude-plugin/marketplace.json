@@ -4,15 +4,15 @@
     "name": "xuanyi"
   },
   "metadata": {
-    "description": "Claude Code plugins for CodeRelay onboarding and QR-first mobile connection.",
-    "version": "1.0.3"
+    "description": "Claude Code plugins for CodeRelay onboarding, quick startup, and QR-first mobile connection.",
+    "version": "1.0.4"
   },
   "plugins": [
     {
       "name": "coderelay",
       "source": "./plugins/coderelay",
-      "description": "CodeRelay onboarding skill for install, pair, start, doctor, and QR-first mobile connection.",
-      "version": "1.0.3",
+      "description": "CodeRelay onboarding and xiaban skills for install, pair, quick startup, doctor, and QR-first mobile connection.",
+      "version": "1.0.4",
       "author": {
         "name": "xuanyi"
       },

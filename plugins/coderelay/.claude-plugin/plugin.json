@@ -1,7 +1,7 @@
 {
   "name": "coderelay",
-  "description": "CodeRelay onboarding skill for install, pair, start, doctor, and QR-first mobile connection.",
-  "version": "1.0.3",
+  "description": "CodeRelay onboarding and xiaban skills for install, pair, quick startup, doctor, and QR-first mobile connection.",
+  "version": "1.0.4",
   "author": {
     "name": "xuanyi"
   },
