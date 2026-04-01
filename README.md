@@ -52,7 +52,7 @@ Default flow:
 6. Start the agent with `coderelay start`
 7. Immediately output the QR code after successful startup whenever the environment can display it
 8. Re-send the ASCII QR into the normal chat reply body in a fenced code block instead of relying only on collapsible tool output
-9. Fall back to manual URL/token only if QR truly cannot be shown
+9. Fall back to manual `API base URL` + user access token only if QR truly cannot be shown
 10. Tell the user how to use `coderelay` afterwards
 
 ### `/coderelay:xiaban`
@@ -65,7 +65,7 @@ Default flow:
 2. Start `coderelay start` in the background and only report success after the agent has actually connected and received hello ack
 3. Run `coderelay connect-qr`
 4. Re-send the ASCII QR into the visible chat reply body
-5. Fall back to manual URL/token only if QR truly cannot be shown
+5. Fall back to manual `API base URL` + user access token only if QR truly cannot be shown
 
 ## Repository layout
 

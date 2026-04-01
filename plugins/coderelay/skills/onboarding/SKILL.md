@@ -31,11 +31,11 @@ argument-hint: "[user-goal]"
 - 默认控制面地址：`http://218.76.30.251:2087`
 - 默认设备接入 URL：`ws://218.76.30.251:2087/ws/agent`
 - `pair` 在服务端返回 `debugCode` 时会自动复用，所以通常不必手填 `--code`
-- `status` 会直接输出 `Device URL` 和 `Device Token`
+- `status` 会直接输出 `API base URL`、`Device URL` 和 `Device Token`
 - `coderelay connect-qr` 会在终端里输出移动端可扫码的连接二维码
 - `coderelay start` 在交互式终端且本地已具备连接信息时，会自动输出同一份连接二维码
-- 移动端接入时，默认优先走扫码连接；只有扫不了时才回退到手填 `Device URL` + `Device Token`
-- `coderelay auth token` 输出的是用户 access token（`uat_*`），**不是**移动端要填的设备 token；不要混用
+- 移动端接入时，默认优先走扫码连接；只有扫不了时才回退到手填 `API base URL` + 用户 access token
+- `coderelay auth token` 输出的是用户 access token（通常是 `uat_*`）；移动端扫码/手填接入时应使用它，不要把 `Device Token` 混进去
 - 本地状态默认保存在 `~/.coderelay/`，主要文件包括 `config.json`、`device.json`、`auth.json`
 - 设备在线的前提是本机 `coderelay start` 进程正在运行
 
@@ -99,8 +99,9 @@ coderelay status
 目标是判断：
 - 是否已经配对
 - 是否已有 `Device ID`
-- 是否已有 `Device URL`
 - 是否已有 `Device Token`
+- 是否已有 `API base URL`
+- 是否已有本地登录态（`Auth user` 不为空）
 
 如果这些信息已经齐全，说明用户大概率已经完成配置，可以跳过配对流程，直接进入启动。
 
@@ -127,8 +128,9 @@ coderelay status
 
 并确认至少拿到：
 - `Device ID`
-- `Device URL`
 - `Device Token`
+- `API base URL`
+- `Auth user`
 
 如果用户明确是在本地开发 / 测试环境中使用，才改成自定义服务端地址：
 
@@ -187,12 +189,13 @@ coderelay status
 ```
 
 然后把以下两项告诉用户：
-- `Device URL`
-- `Device Token`
+- `API base URL`
+- `coderelay auth token` 输出的用户 access token
 
 并明确说明：
-- URL 输入框填 `Device URL`
-- Token 输入框填 `Device Token`
+- URL 输入框填 `API base URL`
+- Token 输入框填 `coderelay auth token` 输出的用户 access token（通常是 `uat_*`）
+- 不要把 `Device Token` 填到移动端扫码/手填接入页里
 
 ## 完成后必须告诉用户什么
 
@@ -213,6 +216,7 @@ coderelay unpair
 - 以后日常使用直接运行 `coderelay start`
 - 想看当前设备信息运行 `coderelay status`
 - 想给手机扫码连接运行 `coderelay connect-qr`
+- 如果要手填，URL 用 `coderelay status` 里的 `API base URL`，Token 用 `coderelay auth token` 输出的用户 access token
 - 如果设备显示异常或离线，先运行 `coderelay doctor`
 - 如果 `start` 进程停了，设备就会离线
 
@@ -229,8 +233,9 @@ coderelay status
 确认：
 - `Paired: yes`
 - `Device ID` 不为空
-- `Device URL` 不为空
 - `Device Token` 不为空
+- `API base URL` 不为空
+- `Auth user` 不为空
 
 2. 运行：
 
@@ -277,8 +282,8 @@ coderelay pair --email <email>
 - 每次成功启动 `coderelay start` 后，只要环境允许展示二维码，就必须立即执行 `connect-qr` 或确保终端已经实际输出了二维码；不要只停留在口头说明
 - 二维码不能只留在工具输出折叠区；必须把 ASCII 二维码再贴到 assistant 的正常回复正文里
 - 如果当前终端是交互式 TTY，并且本地已有连接信息，应优先让用户扫描终端输出的二维码
-- 只有在二维码无法展示、无法扫码、或用户明确要求手填时，才回退到 `status` 里的 `Device URL` 和 `Device Token`
-- 当用户问“移动端填什么”，先回答“优先扫码连接”；若必须手填，再明确填 `status` 里的 `Device URL` 和 `Device Token`
+- 只有在二维码无法展示、无法扫码、或用户明确要求手填时，才回退到 `status` 里的 `API base URL` 加上 `coderelay auth token` 输出的用户 access token
+- 当用户问“移动端填什么”，先回答“优先扫码连接”；若必须手填，再明确填 `status` 里的 `API base URL` 和 `coderelay auth token` 输出的用户 access token
 - 当用户问“为什么显示离线”，先检查 `start` 是否仍在运行，而不是先改配置
 - 如果用户明确在源码仓库里调试，才切到 `npm install`、`npm run build`、`node dist/cli.js ...` 这组命令
 - 不要让用户手工拼接 gateway 地址；默认值够用时直接使用默认值

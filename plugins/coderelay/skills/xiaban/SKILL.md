@@ -22,13 +22,13 @@ argument-hint: "[user-goal]"
 
 - 主命令：`coderelay`
 - 当前 npm 包名：`@xuanyi0609/coderelay`
-- `coderelay status` 会直接输出 `Device URL` 和 `Device Token`
+- `coderelay status` 会直接输出 `API base URL`、`Device URL`、`Device Token`
 - `coderelay doctor` 会检查 server health、shell、真实 PTY 健康状态
 - `coderelay start` 只有在进程持续运行时，设备才会保持在线
 - `coderelay connect-qr` 会输出移动端扫码二维码
 - `coderelay start` 在交互式终端时可能会自动打二维码，但**不要依赖它兜底**；要自己显式执行 `coderelay connect-qr`
-- `coderelay connect-qr` 依赖本地 `apiBaseUrl` 与本地 auth token；已配对设备不等于一定能直接出二维码
-- 只有当二维码真的无法展示时，才回退到手填 `Device URL` + `Device Token`
+- `coderelay connect-qr` 的二维码载荷使用的是本地 `apiBaseUrl` 与用户 `accessToken`（通常是 `uat_*`），不是 `Device URL` + `Device Token`
+- 只有当二维码真的无法展示时，才回退到手填 `API base URL` + 用户 `accessToken`
 
 ## 标准执行流程
 
@@ -58,8 +58,10 @@ coderelay status
 - `Paired: yes`
 - `Device ID`
 - `Device Token`
+- `API base URL`
+- `Auth user`
 
-如果 `status` 里已经给出了 `Device URL` 和 `Device Token`，顺手记下来，后面二维码不可用时优先复用。
+如果 `status` 里已经给出了 `API base URL`，并且当前本地已有可用登录态，顺手记下来，后面二维码不可用时优先复用。
 
 如果这些关键项缺失：
 - 不要直接 `coderelay start`
@@ -138,17 +140,24 @@ coderelay connect-qr
 - 本地缺少 `connect-qr` 所需信息
 - 用户明确说当前不能扫码
 
-这时优先复用第 2 步已经拿到的 `Device URL` 和 `Device Token`。
+这时优先复用第 2 步已经拿到的 `API base URL`。
 
-只有当第 2 步没有拿到、或信息明显不完整时，才再执行：
+然后再取用户 access token：
+
+```bash
+coderelay auth token
+```
+
+只有当第 2 步没有拿到 `API base URL`、或信息明显不完整时，才再执行：
 
 ```bash
 coderelay status
 ```
 
 然后明确告诉用户：
-- URL 输入框填 `Device URL`
-- Token 输入框填 `Device Token`
+- URL 输入框填 `API base URL`
+- Token 输入框填 `coderelay auth token` 输出的用户 access token（通常是 `uat_*`）
+- 不要把 `Device Token` 填到移动端扫码/手填接入页里
 
 ## 完成后要告诉用户什么
 
@@ -156,7 +165,7 @@ coderelay status
 - 设备已经在线
 - `coderelay start` 这个后台进程停掉后设备就会离线
 - 优先用上面那份二维码让手机扫码连接
-- 如果扫码失败，再用 `Device URL` 和 `Device Token` 手填
+- 如果扫码失败，再用 `API base URL` 和用户 access token（`coderelay auth token` 输出的 `uat_*`）手填
 
 ## 给 AI 的执行规则
 
@@ -166,5 +175,5 @@ coderelay status
 - 如果 `coderelay` 不存在、未配对、或缺少二维码前置条件，不要硬跑 `start`；切到 onboarding 的最小补全路径
 - 成功判定必须包含：`[agent] connected to ...` 和 `[agent] hello ack ...`
 - 二维码不能只留在工具折叠区；必须在 assistant 正常回复里再贴一次 ASCII 二维码代码块
-- 只有在二维码真的不可用时，才回退到 `status` 里的 `Device URL` 和 `Device Token`
+- 只有在二维码真的不可用时，才回退到 `status` 里的 `API base URL` 加上 `coderelay auth token` 输出的用户 access token
 - 当用户只是想“下班前把设备挂在线给手机连”，优先用这个 skill，而不是一上来走完整 onboarding
