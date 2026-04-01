@@ -8,7 +8,7 @@ This repository intentionally contains **only Claude Code plugin files** for dis
 
 - `coderelay`
   - Skill: `/coderelay:onboarding`
-  - Purpose: guide users through CodeRelay install, pairing, startup, diagnosis, and QR-first mobile connection.
+  - Purpose: fully set up CodeRelay from install to configuration to startup, with QR-first mobile connection.
 
 ## Install
 
@@ -29,8 +29,23 @@ Then use:
 You can also pass a goal:
 
 ```text
-/coderelay:onboarding 帮我把电脑接到手机上，优先扫码
+/coderelay:onboarding 帮我装好 coderelay，配置好并启动，优先扫码连接
 ```
+
+## What this skill does
+
+The onboarding skill is designed to **do the work proactively** instead of only listing commands.
+
+Default flow:
+
+1. Check whether Node.js, npm, and `coderelay` are available
+2. Install or update `@xuanyi0609/coderelay` with `npm install -g` on first use
+3. Check existing configuration with `coderelay status`
+4. Only ask the user for required missing information, such as email for pairing
+5. Run `coderelay pair` only when needed
+6. Start the agent with `coderelay start`
+7. Prefer QR output for mobile connection, and fall back to manual URL/token only if necessary
+8. Tell the user how to use `coderelay` afterwards
 
 ## Repository layout
 

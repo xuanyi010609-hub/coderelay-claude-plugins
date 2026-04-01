@@ -5,14 +5,14 @@
   },
   "metadata": {
     "description": "Claude Code plugins for CodeRelay onboarding and QR-first mobile connection.",
-    "version": "1.0.0"
+    "version": "1.0.1"
   },
   "plugins": [
     {
       "name": "coderelay",
       "source": "./plugins/coderelay",
       "description": "CodeRelay onboarding skill for install, pair, start, doctor, and QR-first mobile connection.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": {
         "name": "xuanyi"
       },
