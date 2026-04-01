@@ -1,0 +1,24 @@
+{
+  "name": "coderelay-marketplace",
+  "owner": {
+    "name": "xuanyi"
+  },
+  "metadata": {
+    "description": "Claude Code plugins for CodeRelay onboarding and QR-first mobile connection.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "coderelay",
+      "source": "./plugins/coderelay",
+      "description": "CodeRelay onboarding skill for install, pair, start, doctor, and QR-first mobile connection.",
+      "version": "1.0.0",
+      "author": {
+        "name": "xuanyi"
+      },
+      "homepage": "https://github.com/xuanyi010609-hub/coderelay-claude-plugins",
+      "repository": "https://github.com/xuanyi010609-hub/coderelay-claude-plugins",
+      "license": "MIT"
+    }
+  ]
+}
