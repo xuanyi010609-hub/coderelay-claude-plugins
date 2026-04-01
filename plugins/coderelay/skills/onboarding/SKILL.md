@@ -174,10 +174,12 @@ coderelay connect-qr
 
 不能只告诉用户“已经启动好了”或“你可以自己再运行 connect-qr”；默认应由 agent 直接把二维码打出来给用户看。
 
+**重要：不要只依赖 Bash/tool 输出块里的折叠内容。运行 `coderelay connect-qr` 后，要把返回的 ASCII 二维码再发一遍到正文里：也就是先跑 `coderelay connect-qr`，然后把返回的 ASCII 二维码复制到普通回复里，用代码块输出。这样二维码就不会藏在 Bash 折叠块里。**
+
 处理顺序如下：
 
 1. `coderelay start` 成功后，立刻执行 `coderelay connect-qr`
-2. 如果 `start` 本身已经自动输出了二维码，仍然以“用户已经看到了二维码”为目标，不要只给文字总结
+2. 如果 `start` 本身已经自动输出了二维码，仍然以“用户已经看到了二维码”为目标，不要只给文字总结；必要时把二维码原文再次贴到回复正文里
 3. 只有在当前环境不是 TTY、二维码确实无法展示、或用户明确说当前不能扫码时，才回退到：
 
 ```bash
@@ -273,6 +275,7 @@ coderelay pair --email <email>
 - 第一次使用默认优先 `npm install -g @xuanyi0609/coderelay`
 - 安装完成后统一使用 `coderelay` 命令，不要默认继续用 `npx`
 - 每次成功启动 `coderelay start` 后，只要环境允许展示二维码，就必须立即执行 `connect-qr` 或确保终端已经实际输出了二维码；不要只停留在口头说明
+- 二维码不能只留在工具输出折叠区；必须把 ASCII 二维码再贴到 assistant 的正常回复正文里
 - 如果当前终端是交互式 TTY，并且本地已有连接信息，应优先让用户扫描终端输出的二维码
 - 只有在二维码无法展示、无法扫码、或用户明确要求手填时，才回退到 `status` 里的 `Device URL` 和 `Device Token`
 - 当用户问“移动端填什么”，先回答“优先扫码连接”；若必须手填，再明确填 `status` 里的 `Device URL` 和 `Device Token`

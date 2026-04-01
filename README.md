@@ -45,8 +45,9 @@ Default flow:
 5. Run `coderelay pair` only when needed
 6. Start the agent with `coderelay start`
 7. Immediately output the QR code after successful startup whenever the environment can display it
-8. Fall back to manual URL/token only if QR truly cannot be shown
-9. Tell the user how to use `coderelay` afterwards
+8. Re-send the ASCII QR into the normal chat reply body in a fenced code block instead of relying only on collapsible tool output
+9. Fall back to manual URL/token only if QR truly cannot be shown
+10. Tell the user how to use `coderelay` afterwards
 
 ## Repository layout
 
