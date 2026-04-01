@@ -44,8 +44,9 @@ Default flow:
 4. Only ask the user for required missing information, such as email for pairing
 5. Run `coderelay pair` only when needed
 6. Start the agent with `coderelay start`
-7. Prefer QR output for mobile connection, and fall back to manual URL/token only if necessary
-8. Tell the user how to use `coderelay` afterwards
+7. Immediately output the QR code after successful startup whenever the environment can display it
+8. Fall back to manual URL/token only if QR truly cannot be shown
+9. Tell the user how to use `coderelay` afterwards
 
 ## Repository layout
 
